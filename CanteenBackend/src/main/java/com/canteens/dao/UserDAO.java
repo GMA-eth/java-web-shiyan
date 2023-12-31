@@ -1,9 +1,6 @@
 package main.java.com.canteens.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import main.java.com.canteens.model.User;
@@ -11,6 +8,9 @@ import main.java.com.canteens.util.DatabaseUtil;
 
 public class UserDAO {
     private Connection connection;
+    private final String ADMIN = "0[U;4H*o366e[N!qj97Y?c2#3{=hTNtwQZ><]0w?3?]Sc)9M*5";
+    private final String USER = "5&|F<cpus]:G{-);+5yoB!;h4v=-&sj£t-r.j({R!8ZcHm7F2[";
+    private final String MERCHANT = "Us2Vq4P$}X6mK+(O7~X[ek5G2x6U?Yu:V~U0h;+Y7WN{}Dz|vc";
 
     public UserDAO() {
         this.connection = DatabaseUtil.getConnection();
@@ -21,7 +21,7 @@ public class UserDAO {
             statement.setString(1, user.getEmail());
             statement.setString(2, user.getPassword());
             statement.setString(3, user.getRole());
-            statement.setTimestamp(4, user.getCreationTime());
+            statement.setTimestamp(4, new Timestamp(System.currentTimeMillis()));
             int rowsInserted = statement.executeUpdate();
             return rowsInserted > 0;
         } catch (SQLException e) {
@@ -63,9 +63,17 @@ public class UserDAO {
         User user = new User();
         user.setUserId(resultSet.getInt("UserID"));
         user.setEmail(resultSet.getString("Email"));
-        user.setPassword(resultSet.getString("Password"));
         user.setRole(resultSet.getString("Role"));
         user.setCreationTime(resultSet.getTimestamp("CreationTime"));
+
+        if (user.getRole().equals("admin")) {
+            user.setRole(ADMIN);
+        } else if (user.getRole().equals("user")) {
+            user.setRole(USER);
+        } else if (user.getRole().equals("merchant")) {
+            user.setRole(MERCHANT);
+        }
+
         return user;
     }
 }
