@@ -24,11 +24,8 @@
 ##### body
 ```json
 {
-    "userId": 1,
     "email": "test@example.com",
     "password": "nicepassword",
-    "role": "merchant",
-    "CreationTime":1703828679355
 }
 ```
 
@@ -44,7 +41,6 @@
     "email": "test@example.com",
     "password": "update_password_23",
     "role": "merchant",
-    "CreationTime":1703828679355
 }
 ```
 
